@@ -60,8 +60,10 @@
   (count (take 2 (filter #{1} (vector-bit-and player-one-strategy player-two-strategy)))))
 
 (defn categorize-nash-game [number-of-rows number-of-columns game-index]
-  (categorize-nash-solutions (player-one-strategy number-of-rows number-of-columns (quot game-index (* number-of-rows number-of-columns)))
-                             (player-two-strategy number-of-rows number-of-columns (mod game-index (* number-of-rows number-of-columns)))))
+  (categorize-nash-solutions (player-one-strategy number-of-rows number-of-columns
+                                                  (quot game-index (* number-of-rows number-of-columns)))
+                             (player-two-strategy number-of-rows number-of-columns
+                                                  (mod game-index (* number-of-rows number-of-columns)))))
 
 (defn number-of-nash-games [number-of-rows number-of-columns]
   (* (expt number-of-rows number-of-columns) (expt number-of-columns number-of-rows)))
@@ -78,11 +80,19 @@
 
 (defn categorize-nash-games [number-of-rows number-of-columns number-of-partitions]
   (let [number-of-games (number-of-nash-games number-of-rows number-of-columns)]
-    (into (sorted-map) (reduce #(merge-with + %1 %2) (map #(categorize-given-nash-games number-of-rows number-of-columns %) (partition-nash-games number-of-partitions number-of-rows number-of-columns (range number-of-games)))))))
+    (into (sorted-map) (reduce #(merge-with + %1 %2) 
+                               (map #(categorize-given-nash-games number-of-rows number-of-columns %)
+                                    (partition-nash-games number-of-partitions number-of-rows
+                                                          number-of-columns (range number-of-games)))))))
 
 (defn pcategorize-nash-games [number-of-rows number-of-columns number-of-partitions]
   (let [number-of-games (number-of-nash-games number-of-rows number-of-columns)]
-    (into (sorted-map) (reduce #(merge-with + %1 %2) (pmap-mine number-of-partitions #(categorize-given-nash-games number-of-rows number-of-columns %) (partition-nash-games number-of-partitions number-of-rows number-of-columns (range number-of-games)))))))
+    (into (sorted-map) (reduce #(merge-with + %1 %2)
+                               (pmap-mine number-of-partitions
+                                          #(categorize-given-nash-games number-of-rows number-of-columns %)
+                                          (partition-nash-games number-of-partitions number-of-rows
+                                                                number-of-columns
+                                                                (range number-of-games)))))))
 ;
 ; Main function
 ;
