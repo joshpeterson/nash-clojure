@@ -59,7 +59,7 @@
       (conj (take (- (+ number-of-partitions 1) 2) partitions) (apply concat (take-last 2 partitions))))))
 
 (defn categorize-given-nash-games [number-of-rows number-of-columns game-indices]
-  (frequencies (pmap #(categorize-nash-game number-of-rows number-of-columns %) game-indices)))
+  (frequencies (map #(categorize-nash-game number-of-rows number-of-columns %) game-indices)))
 
 (defn categorize-nash-games [number-of-rows number-of-columns number-of-partitions]
   (let [number-of-games (number-of-nash-games number-of-rows number-of-columns)]
