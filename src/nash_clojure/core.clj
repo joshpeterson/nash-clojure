@@ -39,11 +39,11 @@
 ; Nash game categorization
 ;
 
-(defn categorize-nash-solutions [player-one-strategy player-two-strategy]
+(defn categorize-nash-solution [player-one-strategy player-two-strategy]
   (count (take 2 (filter #{1} (vector-bit-and player-one-strategy player-two-strategy)))))
 
 (defn categorize-nash-game [number-of-rows number-of-columns game-index]
-  (categorize-nash-solutions (player-one-strategy number-of-rows number-of-columns
+  (categorize-nash-solution (player-one-strategy number-of-rows number-of-columns
                                                   (quot game-index (* number-of-rows number-of-columns)))
                              (player-two-strategy number-of-rows number-of-columns
                                                   (mod game-index (* number-of-rows number-of-columns)))))

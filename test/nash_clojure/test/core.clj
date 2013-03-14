@@ -27,13 +27,13 @@
   (is (= (seq '(6 5 5)) (map count (partition-nash-games 3 2 2 (range 16))))))
 
 (deftest finds-unique-nash-solutions
-  (is (= 1 (categorize-nash-solutions [1 0 1 0] [1 1 0 0]))))
+  (is (= 1 (categorize-nash-solution [1 0 1 0] [1 1 0 0]))))
 
 (deftest finds-non-unique-nash-solutions
-  (is (= 2 (categorize-nash-solutions [1 0 0 1] [1 0 0 1]))))
+  (is (= 2 (categorize-nash-solution [1 0 0 1] [1 0 0 1]))))
 
 (deftest finds-no-nash-solutions
-  (is (= 0 (categorize-nash-solutions [1 0 0 1] [0 1 1 0]))))
+  (is (= 0 (categorize-nash-solution [1 0 0 1] [0 1 1 0]))))
 
 (deftest categorize-two-by-two-game-0
   (is (= 1 (categorize-nash-game 2 2 0))))
