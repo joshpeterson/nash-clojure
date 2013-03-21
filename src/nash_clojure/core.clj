@@ -44,9 +44,9 @@
 
 (defn categorize-nash-game [number-of-rows number-of-columns game-index]
   (categorize-nash-solution (player-one-strategy number-of-rows number-of-columns
-                                                  (quot game-index (* number-of-rows number-of-columns)))
-                             (player-two-strategy number-of-rows number-of-columns
-                                                  (mod game-index (* number-of-rows number-of-columns)))))
+                                                 (quot game-index (expt number-of-rows number-of-columns)))
+                            (player-two-strategy number-of-rows number-of-columns
+                                                 (mod game-index (expt number-of-rows number-of-columns)))))
 
 (defn number-of-nash-games [number-of-rows number-of-columns]
   (* (expt number-of-rows number-of-columns) (expt number-of-columns number-of-rows)))
