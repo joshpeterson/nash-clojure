@@ -119,8 +119,8 @@
 (deftest finds-fourth-two-by-two-player-agnostic-strategy
   (is (= [0 1 0 1] (player-agnostic-strategy 2 2 3))))
 
-(deftest finds-sixteenth-four-by-four-player-agnostic-strategy
-  (is (= [1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0] (player-agnostic-strategy 4 4 16))))
+(deftest finds-seventeenth-four-by-four-player-agnostic-strategy
+  (is (= [1 0 0 0 1 0 0 0 0 1 0 0 1 0 0 0] (player-agnostic-strategy 4 4 16))))
 
 (deftest finds-column-rank-order-for-first-two-by-two-player-agnostic-strategy
   (is (= [1 1 0 0] (column-rank-order 2 [1 0 1 0]))))
