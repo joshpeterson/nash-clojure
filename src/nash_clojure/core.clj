@@ -79,10 +79,9 @@
 
 (defn partition-nash-games
   "Partition the list of all Nash games into a given number of subsequences."
-  [number-of-partitions number-of-rows number-of-columns games]
-  (let [number-of-games (number-of-nash-games number-of-rows number-of-columns)
-        partitions (partition-all (quot number-of-games number-of-partitions) games)]
-    (if (= 0 (rem (count games) number-of-partitions))
+  [number-of-partitions number-of-rows number-of-columns number-of-games]
+  (let [partitions (partition-all (quot number-of-games number-of-partitions) (range number-of-games))]
+    (if (= 0 (rem number-of-games number-of-partitions))
       partitions
       (conj (take (- (+ number-of-partitions 1) 2) partitions) (apply concat (take-last 2 partitions))))))
 
@@ -99,7 +98,7 @@
     (into (sorted-map) (reduce #(merge-with + %1 %2) 
                                (map #(categorize-given-nash-games number-of-rows number-of-columns %)
                                     (partition-nash-games number-of-partitions number-of-rows
-                                                          number-of-columns (range number-of-games)))))))
+                                                          number-of-columns number-of-games))))))
 
 (defn pcategorize-nash-games
   "Categorize the Nash solutions for games of a given size, using the given number of partitions
@@ -110,7 +109,7 @@
                                (pmap #(categorize-given-nash-games number-of-rows number-of-columns %)
                                      (partition-nash-games number-of-partitions number-of-rows
                                                            number-of-columns
-                                                           (range number-of-games)))))))
+                                                           number-of-games))))))
 ;
 ; Main function
 ;
