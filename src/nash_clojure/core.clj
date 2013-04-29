@@ -85,6 +85,20 @@
       partitions
       (conj (take (- (+ number-of-partitions 1) 2) partitions) (apply concat (take-last 2 partitions))))))
 
+(defn partition-nash-games-2
+  [number-of-partitions number-of-games]
+  (let [entries-per-partition (quot number-of-games number-of-partitions)
+        partitions (map #(conj [%] (+ % (- entries-per-partition 1)))
+                        (filter #(and (>= (- number-of-games %) entries-per-partition)
+                                      (= 0 (mod %1 entries-per-partition)))
+                                (range number-of-games)))]
+    (if (= 0 (rem number-of-games number-of-partitions))
+      partitions
+      (let [first-indexes (take (- number-of-partitions 1) partitions)
+            last-indexes-start (nth (nth (take-last 1 partitions) 0) 0)
+            new-last-indexes (conj [] last-indexes-start (- number-of-games 1))]
+       (apply concat (conj () (conj () new-last-indexes) first-indexes))))))
+
 (defn categorize-given-nash-games
   "Categorize the Nash solutions for games with the given games indoces."
   [number-of-rows number-of-columns game-indices]

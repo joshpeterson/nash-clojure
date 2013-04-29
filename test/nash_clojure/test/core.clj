@@ -26,6 +26,12 @@
 (deftest partition-two-by-two-games-with-three-partitions
   (is (= (seq '(6 5 5)) (map count (partition-nash-games 3 2 2 16)))))
 
+(deftest partition-2-two-by-two-games-with-two-partitions
+  (is (= (conj [] [0 7] [8 15]) (partition-nash-games-2 2 16))))
+
+(deftest partition-2-two-by-two-games-with-three-partitions
+  (is (= (conj [] [0 4] [5 9] [10 15]) (partition-nash-games-2 3 16))))
+
 (deftest finds-unique-nash-solutions
   (is (= 1 (categorize-nash-solution [1 0 1 0] [1 1 0 0]))))
 
