@@ -26,6 +26,12 @@
 (deftest partition-two-by-two-games-with-three-partitions
   (is (= (seq '(6 5 5)) (map count (partition-nash-games 3 2 2 16)))))
 
+(deftest partition-2-three-by-three-games-with-three-partitions
+  (is (= (conj [] [0 242] [243 485] [486 728]) (partition-nash-games-2 3 729))))
+
+(deftest partition-2-three-by-three-games-with-two-partitions
+  (is (= (conj [] [0 363] [364 728]) (partition-nash-games-2 2 729))))
+
 (deftest partition-2-two-by-two-games-with-two-partitions
   (is (= (conj [] [0 7] [8 15]) (partition-nash-games-2 2 16))))
 
