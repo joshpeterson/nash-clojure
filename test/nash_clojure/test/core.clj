@@ -14,17 +14,17 @@
 (deftest categorize-all-three-by-three-games-with-two-partitions
   (is (= {0 156, 1 423, 2 150} (categorize-nash-games 3 3 2))))
 
-(deftest partition-three-by-three-games-with-two-partitions
-  (is (= (seq '(365 364)) (map count (partition-nash-games 2 3 3 (range 729))))))
-
 (deftest partition-three-by-three-games-with-three-partitions
-  (is (= (seq '(243 243 243)) (map count (partition-nash-games 3 3 3 (range 729))))))
+  (is (= (conj [] [0 242] [243 485] [486 728]) (partition-nash-games 3 729))))
+
+(deftest partition-three-by-three-games-with-two-partitions
+  (is (= (conj [] [0 363] [364 728]) (partition-nash-games 2 729))))
 
 (deftest partition-two-by-two-games-with-two-partitions
-  (is (= (seq '(8 8)) (map count (partition-nash-games 2 2 2 (range 16))))))
+  (is (= (conj [] [0 7] [8 15]) (partition-nash-games 2 16))))
 
 (deftest partition-two-by-two-games-with-three-partitions
-  (is (= (seq '(6 5 5)) (map count (partition-nash-games 3 2 2 (range 16))))))
+  (is (= (conj [] [0 4] [5 9] [10 15]) (partition-nash-games 3 16))))
 
 (deftest finds-unique-nash-solutions
   (is (= 1 (categorize-nash-solution [1 0 1 0] [1 1 0 0]))))

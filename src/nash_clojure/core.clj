@@ -78,18 +78,25 @@
   (* (expt number-of-rows number-of-columns) (expt number-of-columns number-of-rows)))
 
 (defn partition-nash-games
-  "Partition the list of all Nash games into a given number of subsequences."
-  [number-of-partitions number-of-rows number-of-columns games]
-  (let [number-of-games (number-of-nash-games number-of-rows number-of-columns)
-        partitions (partition-all (quot number-of-games number-of-partitions) games)]
-    (if (= 0 (rem (count games) number-of-partitions))
+  "Determine the start and end indices of each group of Nash games"
+  [number-of-partitions number-of-games]
+  (let [entries-per-partition (quot number-of-games number-of-partitions)
+        partitions (map #(conj [%] (+ % (- entries-per-partition 1)))
+                        (filter #(and (>= (- number-of-games %) entries-per-partition)
+                                      (= 0 (mod %1 entries-per-partition)))
+                                (range number-of-games)))]
+    (if (= 0 (rem number-of-games number-of-partitions))
       partitions
-      (conj (take (- (+ number-of-partitions 1) 2) partitions) (apply concat (take-last 2 partitions))))))
+      (let [first-indices (take (- number-of-partitions 1) partitions)
+            last-indices-start (nth (nth (take-last 1 partitions) 0) 0)
+            new-last-indices (conj [] last-indices-start (- number-of-games 1))]
+       (apply concat (conj () (conj () new-last-indices) first-indices))))))
 
 (defn categorize-given-nash-games
   "Categorize the Nash solutions for games with the given games indoces."
-  [number-of-rows number-of-columns game-indices]
-  (frequencies (map #(categorize-nash-game number-of-rows number-of-columns %) game-indices)))
+  [number-of-rows number-of-columns start-and-end-indices]
+  (frequencies (map #(categorize-nash-game number-of-rows number-of-columns %)
+                    (range (nth start-and-end-indices 0) (+ (nth start-and-end-indices 1) 1)))))
 
 (defn categorize-nash-games
   "Categorize the Nash solutions for games of a given size, using the given number of paritions
@@ -98,8 +105,7 @@
   (let [number-of-games (number-of-nash-games number-of-rows number-of-columns)]
     (into (sorted-map) (reduce #(merge-with + %1 %2) 
                                (map #(categorize-given-nash-games number-of-rows number-of-columns %)
-                                    (partition-nash-games number-of-partitions number-of-rows
-                                                          number-of-columns (range number-of-games)))))))
+                                    (partition-nash-games number-of-partitions number-of-games))))))
 
 (defn pcategorize-nash-games
   "Categorize the Nash solutions for games of a given size, using the given number of partitions
@@ -108,9 +114,7 @@
   (let [number-of-games (number-of-nash-games number-of-rows number-of-columns)]
     (into (sorted-map) (reduce #(merge-with + %1 %2)
                                (pmap #(categorize-given-nash-games number-of-rows number-of-columns %)
-                                     (partition-nash-games number-of-partitions number-of-rows
-                                                           number-of-columns
-                                                           (range number-of-games)))))))
+                                     (partition-nash-games number-of-partitions number-of-games))))))
 ;
 ; Main function
 ;
