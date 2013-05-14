@@ -83,7 +83,7 @@
   (let [entries-per-partition (quot number-of-games number-of-partitions)
         partitions (map #(conj [%] (+ % (- entries-per-partition 1)))
                         (filter #(and (>= (- number-of-games %) entries-per-partition)
-                                      (= 0 (mod %1 entries-per-partition)))
+                                      (= 0 (mod % entries-per-partition)))
                                 (range number-of-games)))]
     (if (= 0 (rem number-of-games number-of-partitions))
       partitions
